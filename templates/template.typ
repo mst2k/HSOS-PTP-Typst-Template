@@ -167,7 +167,7 @@
   // Author information
   text(
     12pt,
-    font: ("New Computer Modern Sans"),
+    font: ("New Computer Modern"),
     pad(
       top: 5em,
       grid(
@@ -320,7 +320,7 @@
 
   pagebreak(weak: true)
 
-  if appendix.fields().len() > 1 {
+    if appendix != [] {  // Prüft, ob der Anhang nicht leer ist
     renderAppendix(appendix)
     pagebreak(weak: true)
   }
