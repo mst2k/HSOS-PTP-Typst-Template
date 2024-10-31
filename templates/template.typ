@@ -118,7 +118,7 @@
   // Globale Spacing-Einstellungen
   set block(spacing: spacing_config.line_spacing)
   set par(
-    justify: true,
+    justify: false,
     leading: spacing_config.line_spacing,
     first-line-indent: 0em,
     spacing: spacing_config.paragraph_spacing
@@ -140,17 +140,16 @@
   // Initial page configuration
   set page(margin: page_config.margins, paper: "a4")
 
-  if level1Pagebreak {
-    show heading.where(level: 1): it => {
+      show heading.where(level: 1): it => {
       context {
         let headings = query(heading.where(level: 1))
-        if headings.len() > 1 and it.body != headings.first().body {
+        if headings.len() > 1 and it.body != headings.first().body and level1Pagebreak {
           pagebreak(weak: true)
         }
       }
       it
     }
-  }
+  
 
   // Title page setup
   align(center, image("../Images/logos/HS-OS-Logo-Standard-rgb.jpg"))
@@ -196,7 +195,8 @@
   )
 
   // Abstract pages
-  set page(numbering: "I", number-align: center)
+  set page(numbering: none, number-align: center)
+  set par(justify: true)
   
   // Konsistentes Spacing für Abstracts
   set block(spacing: spacing_config.line_spacing)
@@ -229,18 +229,23 @@
   }
   
   v(2fr)
-  counter(page).update(1)
-
-  // Table of contents and indexes
+  
+  // State für die letzte römische Seitenzahl
+  let last_page_state = state("last_roman_page", 0)
+  
+  // Verzeichnisse mit römischen Zahlen
+  set page(numbering: none, number-align: center, header: none)
+  
   show outline.entry: set block(spacing: spacing_config.line_spacing)
-  set page(header: none)
-
   show outline.entry.where(level: 1): it => strong(it)
+  
   outline(depth: 4, indent: true, title: [Inhaltsverzeichnis])
   pagebreak()
+  set page(numbering: "I", number-align: center, header: none)
+  counter(page).update(1)  // Start der römischen Nummerierung
 
-  // Indexes
-  context {
+  // Weitere Verzeichnisse (Abbildungen, Tabellen, etc.)
+  context{
     let figures = query(figure.where(kind: image))
     if figures.len() > 0 {
       heading(outlined: true, numbering: none)[Abbildungsverzeichnis]
@@ -260,7 +265,6 @@
     }
   }
 
-  // Acronyms
   if acronyms.len() > 0 {
     print-index(
       title: "Abkürzungsverzeichnis",
@@ -271,7 +275,6 @@
     )
   }
 
-  // Symbols
   if symbols.len() > 0 {
     heading(outlined: true, numbering: none)[Symbolverzeichnis]
     set block(above: spacing_config.line_spacing, below: 10pt)
@@ -285,13 +288,18 @@
     }
   }
 
-  // Main content
-  set block(above: spacing_config.heading_spacing.above, below: spacing_config.heading_spacing.below)
-  set par(justify: true, leading: spacing_config.line_spacing)
+  // Speichere die letzte römische Seitenzahl im State
+  context{
+     // Speichere die letzte römische Seitenzahl im State
+    let current_page = counter(page).get().first()
+    last_page_state.update(current_page)
+  }
+
+  // Haupttext mit arabischen Zahlen
+  counter(page).update(0)  // Starte bei 1 für den Haupttext
   set page(
     numbering: "1",
     number-align: center,
-    paper: "a4",
     margin: (
       top: page_config.header_margin,
       bottom: page_config.footer_margin,
@@ -300,30 +308,30 @@
     ),
     header: getHeader(authors.at(0).name)
   )
-  counter(page).update(1)
 
   body
 
-  // End matter
-  set page(numbering: "I", number-align: center, margin: auto, header: none)
-  
   context {
-    let firstBodyHeading = query(heading.where(numbering: "1.1")).first()
-    counter(page).update(firstBodyHeading.location().page() - 1)
-  }
+    // Zurück zu römischen Zahlen für Literaturverzeichnis etc.
+    set page(numbering: "I", number-align: center, margin: auto, header: none)
+    
+    // Hole die letzte römische Seitenzahl aus dem State
+    let last_roman = last_page_state.get()
+    counter(page).update(last_roman + 1)  // Jetzt können wir +1 addieren
 
-  bibliography(
-    title: [Literaturverzeichnis],
-    style: "chicago-notes",
-    "../sources.bib"
-  )
+    bibliography(
+      title: [Literaturverzeichnis],
+      style: "chicago-notes",
+      "../sources.bib"
+    )
 
-  pagebreak(weak: true)
-
-    if appendix != [] {  // Prüft, ob der Anhang nicht leer ist
-    renderAppendix(appendix)
     pagebreak(weak: true)
-  }
 
-  eidesstattliche_erklaerung(title)
+    if appendix != [] {
+      renderAppendix(appendix)
+      pagebreak(weak: true)
+    }
+
+    eidesstattliche_erklaerung(title)
+  }
 }
