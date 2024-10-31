@@ -85,7 +85,6 @@ Verschiedene Snippets zur Hilfe!
 
 == Quellen
 Referenziert wird mit \@ - Quelle: @Vertrau.mir.Bruder[120 ff.]
-Zu sehen in @anhang1.
 Wie bereits in @einführung beschrieben
 
 == Bilder
