@@ -156,11 +156,11 @@
   align(center, image("../Images/logos/HS-OS-Logo-Standard-rgb.jpg"))
   
   align(center)[
-    #v(-10pt)
+    #v(-16pt)
     #text(14pt, weight: 200, "INSTITUT FÜR DUALE STUDIENGÄNGE")
-    #v(20pt)
+    #v(-10pt)
     #emph(text(16pt, weight: 600, "Praxistransferprojekt im Studiengang " + studiengang))
-    #v(10pt)
+    #v(0pt)
     #text(2em, weight: 700, title)
   ]
 
@@ -234,6 +234,7 @@
   // State für die letzte römische Seitenzahl
   let last_page_state = state("last_roman_page", 0)
   
+  in-outline.update(true)
   // Verzeichnisse mit römischen Zahlen
   set page(numbering: none, number-align: center, header: none)
   
@@ -294,6 +295,7 @@
      // Speichere die letzte römische Seitenzahl im State
     let current_page = counter(page).get().first()
     last_page_state.update(current_page)
+    in-outline.update(false)
   }
 
   // Haupttext mit arabischen Zahlen
