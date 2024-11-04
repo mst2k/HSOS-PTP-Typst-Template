@@ -1,6 +1,6 @@
 #import "acronyms.typ": print-index, init-acronyms
 #import "eidesstattliche_erklaerung.typ": *
-#import "@preview/wrap-it:0.1.0": wrap-content
+//#import "@preview/wrap-it:0.1.0": wrap-content
 
 /* -------------------------------------------------------------
                         default Page-Config
@@ -109,6 +109,7 @@
   spacing_config: SpacingConfig,
   level1Pagebreak:level1Pagebreak
 ) = {
+  init-acronyms(acronyms)
   // Document setup
   set document(author: authors.map(a => a.name), title: title)
   

@@ -55,7 +55,6 @@
   symbols: symbols,
   appendix: appendix,
 )
-#init-acronyms(acronyms)
 
 ////////////////////////////////////////////////
 //Hauptteil - Hier wird der Inhalt geschrieben//
