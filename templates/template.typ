@@ -89,6 +89,8 @@
   )
   appendix
 }
+#let in-outline = state("in-outline", false)
+#let flex-caption(long, short) = context if in-outline.get() { short } else { long }
 
 // Main project function
 #let project(
