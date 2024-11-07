@@ -382,7 +382,7 @@
     
     // Hole die letzte römische Seitenzahl aus dem State
     let last_roman = last_page_state.get()
-    counter(page).update(last_roman + 1)  // Jetzt können wir +1 addieren
+    counter(page).update(last_roman)
 
     bibliography(
       title: [Literaturverzeichnis],
