@@ -255,37 +255,6 @@
 
   // Author information
   title_page(authors, betreuer,modul,abgabedatum)
-    /*
-  text(
-    12pt,
-    font: ("New Computer Modern"),
-    pad(
-      top: 5em,
-      grid(
-        columns: (auto, 1fr),
-        rows: (60pt, 30pt),
-        gutter: 0.8em,
-        
-        "Eingereicht von:",
-        ..authors.map(author => [
-          #author.name
-          geb.: #author.birthday in #author.birthplace
-          #author.address
-        ]),
-        "Matrikelnummer:",
-        text(weight: 800, authors.at(0).matrikelnummer),
-        "Studiengruppe:",
-        text(weight: 800, authors.at(0).studiengruppe),
-        "Betreuer:",
-        betreuer,
-        "Modul:",
-        modul,
-        "Abgabedatum:",
-        abgabedatum
-      ),
-    )
-  )
-  */
 
   // Abstract pages
   set page(numbering: none, number-align: center)
@@ -381,6 +350,7 @@
       )
     }
   }
+  pagebreak(weak: true)
 
   // Speichere die letzte römische Seitenzahl im State
   context{
@@ -391,7 +361,7 @@
   }
 
   // Haupttext mit arabischen Zahlen
-  counter(page).update(0)  // Starte bei 1 für den Haupttext
+  counter(page).update(1)  // Starte bei 1 für den Haupttext
   set page(
     numbering: "1",
     number-align: center,
