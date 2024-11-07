@@ -1,6 +1,6 @@
 #import "acronyms.typ": print-index, init-acronyms
 #import "eidesstattliche_erklaerung.typ": *
-//#import "@preview/wrap-it:0.1.0": wrap-content
+#import "@preview/wrap-it:0.1.0": wrap-content
 
 /* -------------------------------------------------------------
                         default Page-Config
@@ -65,6 +65,90 @@
       let lastMainHeading = mainSections.last()
       buildMainHeader(lastMainHeading.body, authorName)
     }
+  }
+}
+
+#let title_page(
+  authors,
+  betreuer,
+  modul,
+  abgabedatum
+) = {
+  // Funktion für einzelnen Autor
+  let single_author_layout = {
+    text(
+      12pt,
+      font: ("New Computer Modern"),
+      pad(
+        grid(
+          columns: (auto, 1fr),
+          rows: (80pt, 30pt, 30pt, 30pt, 30pt),
+          gutter: 0.8em,
+          
+          "Eingereicht von:",
+          [
+            #authors.at(0).name \
+            geb.: #authors.at(0).birthday in #authors.at(0).birthplace \
+            #authors.at(0).address
+          ],
+          
+          "Matrikelnummer:",
+          text(weight: 800, authors.at(0).matrikelnummer),
+          
+          "Studiengruppe:",
+          text(weight: 800, authors.at(0).studiengruppe),
+          
+          "Betreuer:",
+          betreuer,
+          
+          "Modul:",
+          modul,
+          
+          "Abgabedatum:",
+          abgabedatum
+        )
+      )
+    )
+  }
+
+  // Funktion für mehrere Autoren
+  let multiple_authors_layout = {
+    let author-factor = {
+      if authors.len() <= 2{ 1em }
+      else if authors.len() <= 4{ 2em }
+      else if authors.len() <= 6{ 3em }
+    }
+    text(top-edge: 2.5em - author-factor*0.5)[#grid(
+      columns: (1fr, 1fr),
+      gutter: 0.5em,
+      [Studiengruppe:], [22-DWF-1],
+      [Betreuer:], [#betreuer],
+      [Modul:], [#modul],
+      [Abgabedatum],[#abgabedatum],
+      [Eingereicht von:], []
+    )
+    ]
+    grid(
+      inset: 0.7em,
+      align: (left),
+      columns: (1fr, 1fr),
+      gutter: .5em,
+      ..authors.map(author => 
+      text(bottom-edge: 0em, top-edge: 1.5em - author-factor*0.5)[
+        *#author.matrikelnummer*\
+        #author.name \
+        geb.: #author.birthday in #author.birthplace \
+        #author.address\
+      ],
+      )
+    )
+  }
+
+  // Wähle Layout basierend auf Anzahl der Autoren
+  if authors.len() == 1 {
+    single_author_layout
+  } else {
+    multiple_authors_layout
   }
 }
 
@@ -162,11 +246,16 @@
     #text(14pt, weight: 200, "INSTITUT FÜR DUALE STUDIENGÄNGE")
     #v(-10pt)
     #emph(text(16pt, weight: 600, "Praxistransferprojekt im Studiengang " + studiengang))
-    #v(0pt)
+
+    #v(1em)
     #text(2em, weight: 700, title)
+    #v(3em)
   ]
 
+
   // Author information
+  title_page(authors, betreuer,modul,abgabedatum)
+    /*
   text(
     12pt,
     font: ("New Computer Modern"),
@@ -196,6 +285,7 @@
       ),
     )
   )
+  */
 
   // Abstract pages
   set page(numbering: none, number-align: center)
