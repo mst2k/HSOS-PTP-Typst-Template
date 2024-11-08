@@ -34,21 +34,22 @@
    ------------------------------------------------------------- */
 
 // Header builder function
-#let buildMainHeader(mainHeadingContent, authorName) = {
+#let buildMainHeader(mainHeadingContent, elem) = {
   [
     #set block(above: 1em, below: 1em)
     #grid(
       columns: 2,
       gutter: 1fr,
+      align(bottom, elem),
       align(bottom, smallcaps(mainHeadingContent)),
-      align(bottom, smallcaps(authorName)),
+      
     )
     #line(length: 100%)    
   ]
 }
 
 // Get current page header using context
-#let getHeader(authorName) = {
+#let getHeader(elem) = {
   context {
     let headings = query(heading)
     let currentPage = here().page()
@@ -63,7 +64,7 @@
     
     if mainSections.len() > 0 {
       let lastMainHeading = mainSections.last()
-      buildMainHeader(lastMainHeading.body, authorName)
+      buildMainHeader(lastMainHeading.body, elem)
     }
   }
 }
@@ -190,6 +191,7 @@
   ort: "",
   language: "en",
   studiengang: "",
+  art:"",
   body,
   appendix: [],
   page_config: PageConfig,
@@ -240,13 +242,13 @@
   
 
   // Title page setup
-  align(center, image("../Images/logos/HS-OS-Logo-Standard-rgb.jpg"))
+  align(center, image("../images/logos/HS-OS-Logo-Standard-rgb.jpg"))
   
   align(center)[
     #v(-16pt)
     #text(14pt, weight: 200, "INSTITUT FÜR DUALE STUDIENGÄNGE")
     #v(-10pt)
-    #emph(text(16pt, weight: 600, "Praxistransferprojekt im Studiengang " + studiengang))
+    #emph(text(16pt, weight: 600, art + " im Studiengang " + studiengang))
 
     #v(1em)
     #text(2em, weight: 700, title)
@@ -372,7 +374,15 @@
       left: page_config.margins.left,
       right: page_config.margins.right
     ),
-    header: getHeader(authors.at(0).name)
+
+    header: getHeader({
+        if authors.len() == 1 {
+          text(smallcaps(authors.at(0).name))
+        } else {
+          image("../images/logos/HS-OS-Logo-Quer-rgb.jpg", height: 20pt, width: auto)
+        }
+      },
+    )
   )
 
   body
