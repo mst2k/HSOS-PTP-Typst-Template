@@ -1,4 +1,4 @@
-#let eidesstattliche_erklaerung(title) = {[
+#let eidesstattliche_erklaerung(title, ort, abgabedatum ,authors) = {[
     #set par(justify: true, first-line-indent: 0pt)
     #v(8em)
     #heading(outlined: false, numbering: none, [Eidesstattliche Erklärung])
@@ -13,13 +13,21 @@
 
 
     #v(40pt)
-    #align(center, grid(
+    #for a in authors {
+        align(center, grid(
         columns: (1fr,1fr),
         rows: (0pt, 0pt),
         gutter: (8pt),
-        align(bottom, datetime.today().display("Lingen, [day].[month].[year]")),
-        align(bottom, image("../images/unterschrift.png", height: 15pt)),
-        overline(extent: 20pt,offset: -10pt,[Ort, Datum]),
-        overline(extent: 20pt,offset: -10pt,[Unterschrift]),
-    ))
+        align(bottom, ort + ", " + abgabedatum),
+        if a.sign !="" {
+            align(bottom, image("../images/signs/" + a.sign , height: 15pt))
+        }else{
+           align(bottom, a.name) 
+        },
+        
+        overline(extent: 30pt,offset: -10pt,[Ort, Datum]),
+        overline(extent: 30pt,offset: -10pt,[Unterschrift]),
+        ))
+        v(3em)
+    }
 ]}

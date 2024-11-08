@@ -187,6 +187,7 @@
   betreuer: "",
   modul: "",
   abgabedatum: "",
+  ort: "",
   language: "en",
   studiengang: "",
   body,
@@ -397,6 +398,6 @@
       pagebreak(weak: true)
     }
 
-    eidesstattliche_erklaerung(title)
+    eidesstattliche_erklaerung(title, ort, abgabedatum ,authors)
   }
 }
