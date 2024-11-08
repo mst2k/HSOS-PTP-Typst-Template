@@ -2,14 +2,33 @@
     #set par(justify: true, first-line-indent: 0pt)
     #v(8em)
     #heading(outlined: false, numbering: none, [Eidesstattliche Erklärung])
-    Ich erkläre an Eides statt, dass ich meine Hausarbeit
+    #if authors.len() == 1 {
+        text("Ich erkläre an Eides statt, dass ich meine Hausarbeit")
+    } else {
+        text("Wir erklären an Eides statt, dass wir unsere Ausarbeitung")
+    }
+
     #v(12pt)
     #align(center, text(13pt, weight: 700, title))
     #v(12pt)
-    selbstständig und ohne fremde Hilfe angefertigt habe und dass ich alle von anderen Autoren
+    #if authors.len() == 1 {
+        text(
+            [selbstständig und ohne fremde Hilfe angefertigt habe und dass ich alle von anderen Autoren
     wörtlich übernommenen Stellen wie auch die sich an die Gedankengänge anderer Autoren
     eng anlehnenden Ausführungen meiner Arbeit besonders gekennzeichnet und die Quellen
-    zitiert habe.
+    zitiert habe. ]
+    )
+       
+    } else {
+        text(
+        [selbstständig und ohne fremde Hilfe angefertigt haben und dass wir alle von anderen Autoren
+        wörtlich übernommenen Stellen wie auch die sich an die Gedankengänge anderer Autoren
+        eng anlehnenden Ausführungen unserer Arbeit besonders gekennzeichnet und die Quellen
+        zitiert haben.
+        ]
+        )
+    }
+    
 
 
     #v(40pt)
