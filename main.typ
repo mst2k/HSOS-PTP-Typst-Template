@@ -35,6 +35,7 @@
   #lorem(200)
 ]
 
+
 #show: project.with(
   title: "Beispieltitel",
   authors: (
@@ -43,19 +44,22 @@
     birthplace: "Lingen (Ems)", 
     address: "Musterstraße 12b, 49811 Lingen(Ems)",
     matrikelnummer: "103923",
-    studiengruppe: "22-DWF-1"),
+    studiengruppe: "22-DWF-1",
+    sign:"unterschrift.png"),
+    
   ),
   betreuer: "Prof. Name Nachname",
   modul: "Modulbezeichnung",
   abgabedatum: datetime.today().display("[day].[month].[year]"),
   language: "de",
+  ort: "Lingen (Ems)",
   studiengang: "Wirtschaftsinformatik",
+  art: "Praxistransferprojekt",
   abstract: abstract,
   acronyms: acronyms,
   symbols: symbols,
   appendix: appendix,
 )
-#init-acronyms(acronyms)
 
 ////////////////////////////////////////////////
 //Hauptteil - Hier wird der Inhalt geschrieben//
@@ -85,8 +89,8 @@ Verschiedene Snippets zur Hilfe!
 
 == Quellen
 Referenziert wird mit \@ - Quelle: @Vertrau.mir.Bruder[120 ff.]
-Zu sehen in @anhang1.
 Wie bereits in @einführung beschrieben
+Siehe @anhang1
 
 == Bilder
 #figure(
